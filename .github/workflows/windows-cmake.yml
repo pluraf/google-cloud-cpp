@@ -13,7 +13,7 @@ on:
         type: boolean
       sccache-mode:
         required: true
-        description: "ENABLED or DISABLED"
+        description: "READ_WRITE or READ_ONLY"
         type: string
       vcpkg-cache-mode:
         required: true
@@ -59,7 +59,7 @@ jobs:
       with:
         ref: ${{ inputs.checkout-ref }}
     - uses: google-github-actions/auth@v2
-      if: ${{ inputs.sccache-mode == 'ENABLED' && inputs.vcpkg-cache-mode == 'readwrite' }}
+      if: ${{ inputs.sccache-mode == 'READ_WRITE' && inputs.vcpkg-cache-mode == 'readwrite' }}
       with:
         create_credentials_file: true
         credentials_json: ${{ secrets.BUILD_CACHE_KEY }}
@@ -229,7 +229,6 @@ jobs:
         (sleep 60  ; choco install -y cmake --version 3.29.2) || \
         (sleep 120 ; choco install -y cmake --version 3.29.2)
     - name: Download and Install sccache
-      if: ${{ inputs.sccache-mode == 'ENABLED' }}
       working-directory: "${{runner.temp}}"
       shell: bash
       run: |
@@ -269,6 +268,7 @@ jobs:
         export CMAKE_OUT='c:\b'
         ci/gha/builds/windows-cmake.sh ${{ matrix.build_type }} ${{ steps.dynamic.outputs.features }}
     env:
+      SCCACHE_GCS_SERVICE_ACCOUNT: anonymous@nowhere.com
       SCCACHE_GCS_BUCKET: cloud-cpp-community-gha-cache
       SCCACHE_GCS_KEY_PREFIX: sccache/${{ matrix.msvc }}/${{ matrix.arch}}/${{ matrix.build_type }}
       SCCACHE_GCS_RW_MODE: ${{ inputs.sccache-mode }}
