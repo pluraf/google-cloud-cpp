@@ -145,7 +145,7 @@ jobs:
           github.event_name == 'push' ||
           contains(github.event.pull_request.labels.*.name, 'gha:full-build')
         }}
-      sccache-mode: 'READ_ONLY'
+      sccache-mode: 'DISABLED'
       vcpkg-cache-mode: 'read'
   notify:
     name: Notify-Google-Chat
