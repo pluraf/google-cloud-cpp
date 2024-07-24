@@ -268,7 +268,7 @@ jobs:
         export CMAKE_OUT='c:\b'
         ci/gha/builds/windows-cmake.sh ${{ matrix.build_type }} ${{ steps.dynamic.outputs.features }}
     env:
-      SCCACHE_GCS_SERVICE_ACCOUNT: anonymous@nowhere.com
+      SCCACHE_GCS_KEY_PATH: "ci/gha/builds/anonymous.json"
       SCCACHE_GCS_BUCKET: cloud-cpp-community-gha-cache
       SCCACHE_GCS_KEY_PREFIX: sccache/${{ matrix.msvc }}/${{ matrix.arch}}/${{ matrix.build_type }}
       SCCACHE_GCS_RW_MODE: ${{ inputs.sccache-mode }}
