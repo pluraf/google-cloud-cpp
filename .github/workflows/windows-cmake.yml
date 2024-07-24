@@ -63,6 +63,11 @@ jobs:
       with:
         create_credentials_file: true
         credentials_json: ${{ secrets.BUILD_CACHE_KEY }}
+    - uses: google-github-actions/auth@v2
+      if: ${{ inputs.sccache-mode == 'READ_ONLY' || inputs.vcpkg-cache-mode == 'read' }}
+      with:
+        create_credentials_file: true
+        credentials_json: ci/gha/builds/anonymous.json
     - uses: actions/setup-python@v5
       id: py311
       with:
@@ -268,7 +273,6 @@ jobs:
         export CMAKE_OUT='c:\b'
         ci/gha/builds/windows-cmake.sh ${{ matrix.build_type }} ${{ steps.dynamic.outputs.features }}
     env:
-      SCCACHE_GCS_KEY_PATH: "ci/gha/builds/anonymous.json"
       SCCACHE_GCS_BUCKET: cloud-cpp-community-gha-cache
       SCCACHE_GCS_KEY_PREFIX: sccache/${{ matrix.msvc }}/${{ matrix.arch}}/${{ matrix.build_type }}
       SCCACHE_GCS_RW_MODE: ${{ inputs.sccache-mode }}
