@@ -14,7 +14,7 @@ on:
       execute-smoke-tests:
         required: true
         description: "Smoke tests require credentials."
-        type: bool
+        type: boolean
 
 permissions:
   contents: read
