@@ -46,8 +46,8 @@ time {
   io::run bazelisk "${args[@]}" test "${test_args[@]}" --test_tag_filters=-integration-test -- //google/cloud:status_test "$@"
 }
 
-echo "${EXECUTE_SMOKE_TESTS}"
-if [[ "${EXECUTE_SMOKE_TESTS}" == "true" ]]; then
+echo "${EXECUTE_INTEGRATION_TESTS}"
+if [[ "${EXECUTE_INTEGRATION_TESTS}" == "true" ]]; then
   TIMEFORMAT="==> 🕑 Storage integration tests done in %R seconds"
   if [[ -n "${GHA_TEST_BUCKET:-}" ]]; then
     time {

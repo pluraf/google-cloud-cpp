@@ -11,9 +11,9 @@ on:
         required: true
         description: "READ_WRITE or READ_ONLY"
         type: string
-      execute-smoke-tests:
+      execute-integration-tests:
         required: true
-        description: "Smoke tests require credentials."
+        description: "Integration tests require credentials."
         type: boolean
 
 permissions:
@@ -120,7 +120,7 @@ jobs:
         # TODO(14314) - remove this VC Toolset workaround
         export BAZEL_VC_FULL_VERSION=${{ steps.vctoolset.outputs.toolset_version }}
         export BAZEL_REMOTE_CACHE_RW_MODE=${{ inputs.bazel-cache-mode }}
-        export EXECUTE_SMOKE_TESTS=${{ inputs.execute-smoke-tests }}
+        export EXECUTE_INTEGRATION_TESTS=${{ inputs.execute-integration-tests }}
         ci/gha/builds/windows-bazel.sh ${{ matrix.compilation_mode }} ${{ join(matrix.targets, ' ') }}
     env:
       BAZEL_REMOTE_CACHE: https://storage.googleapis.com/cloud-cpp-community-gha-cache/bazel-cache/${{ matrix.msvc }}/${{ matrix.compilation_mode }}
