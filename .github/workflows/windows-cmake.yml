@@ -17,7 +17,7 @@ on:
         type: string
       vcpkg-cache-mode:
         required: true
-        description: "Access vcpkg cache in either read or readwrite mode."
+        description: "read or readwrite"
         type: string
 
 permissions:
@@ -233,7 +233,7 @@ jobs:
       working-directory: "${{runner.temp}}"
       shell: bash
       run: |
-        curl -fsSL https://github.com/mozilla/sccache/releases/download/v0.8.1/sccache-v0.8.1-x86_64-pc-windows-msvc.tar.gz | \
+        curl -fsSL https://github.com/mozilla/sccache/releases/download/v0.5.4/sccache-v0.5.4-x86_64-pc-windows-msvc.tar.gz | \
           tar -zxf - --strip-components=1
         chmod +x sccache.exe
         mv sccache.exe /c/Users/runneradmin/.cargo/bin
@@ -269,7 +269,6 @@ jobs:
         export CMAKE_OUT='c:\b'
         ci/gha/builds/windows-cmake.sh ${{ matrix.build_type }} ${{ steps.dynamic.outputs.features }}
     env:
-      # blah
       SCCACHE_GCS_BUCKET: cloud-cpp-community-gha-cache
       SCCACHE_GCS_KEY_PREFIX: sccache/${{ matrix.msvc }}/${{ matrix.arch}}/${{ matrix.build_type }}
       SCCACHE_GCS_RW_MODE: ${{ inputs.sccache-mode }}

@@ -113,6 +113,7 @@ jobs:
     uses: ./.github/workflows/windows-bazel.yml
     with:
       checkout-ref: ${{ needs.pre-flight.outputs.checkout-sha }}
+      bazel-cache-mode: 'READ_ONLY'
     secrets: inherit
   macos-cmake:
     name: macOS-CMake
@@ -129,6 +130,8 @@ jobs:
           github.event_name == 'push' ||
           contains(github.event.pull_request.labels.*.name, 'gha:full-build')
         }}
+      sccache-mode: 'ENABLED'
+      vcpkg-cache-mode: 'readwrite'
     secrets: inherit
   windows-cmake:
     name: Windows-CMake
@@ -145,8 +148,9 @@ jobs:
           github.event_name == 'push' ||
           contains(github.event.pull_request.labels.*.name, 'gha:full-build')
         }}
-      sccache-mode: 'DISABLED'
-      vcpkg-cache-mode: 'read'
+      sccache-mode: 'ENABLED'
+      vcpkg-cache-mode: 'readwrite'
+    secrets: inherit
   notify:
     name: Notify-Google-Chat
     # Wait until all the other jobs have completed.
