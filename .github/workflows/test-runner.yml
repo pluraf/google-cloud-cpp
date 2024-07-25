@@ -130,7 +130,7 @@ jobs:
           github.event_name == 'push' ||
           contains(github.event.pull_request.labels.*.name, 'gha:full-build')
         }}
-      sccache-mode: 'ENABLED'
+      sccache-mode: 'READ_WRITE'
       vcpkg-cache-mode: 'readwrite'
     secrets: inherit
   windows-cmake:
@@ -148,7 +148,7 @@ jobs:
           github.event_name == 'push' ||
           contains(github.event.pull_request.labels.*.name, 'gha:full-build')
         }}
-      sccache-mode: 'ENABLED'
+      sccache-mode: 'READ_WRITE'
       vcpkg-cache-mode: 'readwrite'
     secrets: inherit
   notify:

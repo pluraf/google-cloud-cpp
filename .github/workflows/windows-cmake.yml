@@ -13,7 +13,7 @@ on:
         type: boolean
       sccache-mode:
         required: true
-        description: "ENABLED or DISABLED"
+        description: "READ_WRITE or DISABLED"
         type: string
       vcpkg-cache-mode:
         required: true
@@ -59,7 +59,7 @@ jobs:
       with:
         ref: ${{ inputs.checkout-ref }}
     - uses: google-github-actions/auth@v2
-      if: ${{ inputs.sccache-mode == 'ENABLED' && inputs.vcpkg-cache-mode == 'readwrite' }}
+      if: ${{ inputs.sccache-mode == 'READ_WRITE' && inputs.vcpkg-cache-mode == 'readwrite' }}
       with:
         create_credentials_file: true
         credentials_json: ${{ secrets.BUILD_CACHE_KEY }}
@@ -229,7 +229,7 @@ jobs:
         (sleep 60  ; choco install -y cmake --version 3.29.2) || \
         (sleep 120 ; choco install -y cmake --version 3.29.2)
     - name: Download and Install sccache
-      if: ${{ inputs.sccache-mode == 'ENABLED' }}
+      if: ${{ inputs.sccache-mode != 'DISABLED' }}
       working-directory: "${{runner.temp}}"
       shell: bash
       run: |

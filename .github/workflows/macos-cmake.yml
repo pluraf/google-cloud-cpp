@@ -13,7 +13,7 @@ on:
         type: boolean
       sccache-mode:
         required: true
-        description: "ENABLED or DISABLED"
+        description: "READ_WRITE or DISABLED"
         type: string
       vcpkg-cache-mode:
         required: true
@@ -50,7 +50,7 @@ jobs:
       with:
         ref: ${{ inputs.checkout-ref }}
     - uses: google-github-actions/auth@v2
-      if: ${{ inputs.sccache-mode == 'ENABLED' && inputs.vcpkg-cache-mode == 'readwrite' }}
+      if: ${{ inputs.sccache-mode == 'READ_WRITE' && inputs.vcpkg-cache-mode == 'readwrite' }}
       with:
         create_credentials_file: true
         credentials_json: ${{ secrets.BUILD_CACHE_KEY }}
@@ -121,6 +121,7 @@ jobs:
         curl -fsSL -o cmake.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/fd21fcf239bcd0231c9fed5719403ec128151af4/Formula/cmake.rb
         brew install cmake.rb
     - name: Download and Install sccache
+      if: ${{ inputs.sccache-mode != 'DISABLED' }}
       working-directory: "${{runner.temp}}"
       run: |
         curl -fsSL https://github.com/mozilla/sccache/releases/download/v0.5.4/sccache-v0.5.4-x86_64-apple-darwin.tar.gz | \
@@ -128,7 +129,6 @@ jobs:
         chmod +x sccache && \
         mv sccache /Users/runner/.cargo/bin/sccache
     - name: Download and Install vcpkg
-      if: ${{ inputs.sccache-mode == 'ENABLED' }}
       working-directory: "${{runner.temp}}"
       run: |
         mkdir -p vcpkg
