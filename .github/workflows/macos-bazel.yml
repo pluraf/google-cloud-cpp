@@ -7,6 +7,14 @@ on:
         required: true
         description: "The ref we want to compile"
         type: string
+      bazel-cache-mode:
+        required: true
+        description: "READ_WRITE or READ_ONLY"
+        type: string
+      execute-smoke-tests:
+        required: true
+        description: "Smoke tests require credentials."
+        type: bool
 
 permissions:
   contents: read
@@ -129,6 +137,7 @@ jobs:
       with:
         ref: ${{ inputs.checkout-ref }}
     - uses: google-github-actions/auth@v2
+      if: ${{ inputs.bazel-cache-mode == 'READ_WRITE' }}
       with:
         create_credentials_file: true
         credentials_json: ${{ secrets.BUILD_CACHE_KEY }}
